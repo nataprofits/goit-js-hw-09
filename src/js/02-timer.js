@@ -1,9 +1,8 @@
-// JavaScript код
 import flatpickr from "flatpickr";
 import "flatpickr/dist/flatpickr.min.css";
 import Notiflix from 'notiflix';
 // Инициализация библиотеки
-Notiflix.Notify.init(); 
+Notiflix.Notify.init();
 
 const startButton = document.querySelector('[data-start]');
 const daysElement = document.querySelector('[data-days]');
@@ -31,16 +30,19 @@ function convertMs(ms) {
 
   return { days, hours, minutes, seconds };
 };
-Notiflix.Notify.success(convertMs(2000)); // {days: 0, hours: 0, minutes: 0, seconds: 2}
-Notiflix.Notify.success(convertMs(140000)); // {days: 0, hours: 0, minutes: 2, seconds: 20}
-Notiflix.Notify.success(convertMs(24140000)); // {days: 0, hours: 6 minutes: 42, seconds: 20}
 
 startButton.addEventListener('click', () => {
   // Получение значение даты ввода
   const datetimePicker = document.getElementById('datetime-picker');
   const targetDate = new Date(datetimePicker.value);
 
-  // Очистка предыдущий интервал обратного отсчета
+  // Если выбранная дата в прошлом, показать окно предупреждения
+  if (targetDate <= new Date()) {
+    Notiflix.Notify.warning('Пожалуйста, выберите дату в будущем.');
+    return;
+  }
+
+  // Очистка предыдущего интервала обратного отсчета
   clearInterval(countdownIntervalId);
 
   // Обновление обратного отсчета каждую секунду
@@ -71,14 +73,14 @@ const options = {
   minuteIncrement: 1,
   onClose(selectedDates) {
     const selectedDate = selectedDates[0];
-    // Если пользователь выбрал дату в прошлом, покажи window.alert() с текстом "Please choose a date in the future".
-    if (selectedDate < new Date()) {
-      window.alert("Please choose a date in the future.");
-    } else {
-      // Если пользователь выбрал валидную дату (в будущем), кнопка «Start» становится активной.
-      startButton.removeAttribute('disabled');
-    }
-  },
+    // Если пользователь выбрал дату в прошлом, показать окно предупреждения
+    if (selectedDate <= new Date()) {
+      Notiflix.Notify.warning('Please choose a date in the future');
+startButton.disabled = true; // Делаем кнопку "Старт" неактивной
+} else {
+startButton.disabled = false; // Делаем кнопку "Старт" активной
+}
+},
 };
 
 flatpickr("#datetime-picker", options);
