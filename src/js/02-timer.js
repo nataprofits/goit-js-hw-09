@@ -1,7 +1,9 @@
 // JavaScript код
 import flatpickr from "flatpickr";
 import "flatpickr/dist/flatpickr.min.css";
-
+import Notiflix from 'notiflix';
+// Инициализация библиотеки
+Notiflix.Notify.init(); 
 
 const startButton = document.querySelector('[data-start]');
 const daysElement = document.querySelector('[data-days]');
@@ -29,9 +31,9 @@ function convertMs(ms) {
 
   return { days, hours, minutes, seconds };
 };
-console.log(convertMs(2000)); // {days: 0, hours: 0, minutes: 0, seconds: 2}
-console.log(convertMs(140000)); // {days: 0, hours: 0, minutes: 2, seconds: 20}
-console.log(convertMs(24140000)); // {days: 0, hours: 6 minutes: 42, seconds: 20}
+Notiflix.Notify.success(convertMs(2000)); // {days: 0, hours: 0, minutes: 0, seconds: 2}
+Notiflix.Notify.success(convertMs(140000)); // {days: 0, hours: 0, minutes: 2, seconds: 20}
+Notiflix.Notify.success(convertMs(24140000)); // {days: 0, hours: 6 minutes: 42, seconds: 20}
 
 startButton.addEventListener('click', () => {
   // Получение значение даты ввода
